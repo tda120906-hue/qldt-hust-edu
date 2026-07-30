@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng thông tin sinh viên - QLĐT HUST</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+    
+    /* 1. HIỆU ỨNG XOAY 3D VÀ KHUNG ĐĂNG NHẬP */
+    .login-wrapper {
+      background: linear-gradient(135deg, #00c6ff, #0072ff, #e100ff);
+      min-height: 100vh; display: flex; justify-content: center; align-items: center;
+      perspective: 1200px; overflow: hidden;
+    }
+    
+    .flip-container {
+      width: 440px;
+      min-height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flip-container.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      background: #fff; padding: 35px;
+    }
+
+    .card-front h2 { font-size: 22px; font-weight: bold; color: #222; margin-bottom: 20px; }
+    
+    .btn-office {
+      background: #e60012; color: white; border: none; width: 100%; padding: 10px 15px;
+      border-radius: 25px; font-weight: bold; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; gap: 10px; font-size: 15px; margin-bottom: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(230, 0, 18, 0.2);
+    }
+    .btn-office:hover {
+      background: #cc0010;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(230, 0, 18, 0.4);
+    }
+
+    .user-icon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid white;
+    }
+
+    .divider { font-size: 12px; color: #777; text-align: center; margin-bottom: 15px; }
+    .divider span { color: #d32f2f; font-weight: bold; display: block; margin-top: 3px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { font-size: 13px; font-weight: bold; color: #333; display: block; margin-bottom: 5px; }
+    .form-group input {
+      width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; background: #fafafa;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-group input:focus {
+      border-color: #0072ff;
+      box-shadow: 0 0 8px rgba(0, 114, 255, 0.2);
+    }
+
+    .btn-submit {
+      background: #e60012; color: white; border: none; width: 100%; padding: 12px;
+      border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(230, 0, 18, 0.2);
+    }
+    .btn-submit:hover {
+      background: #cc0010;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(230, 0, 18, 0.4);
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    
+    .user-logo-large {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 15px auto;
+      display: block;
+      border: 3px solid #0078d4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .adfs-title { font-size: 13px; color: #333; margin-bottom: 15px; text-align: center; }
+    .adfs-input {
+      width: 100%; padding: 10px; border: 1px solid #0078d4; margin-bottom: 12px; outline: none; font-size: 13px; border-radius: 6px;
+    }
+    .btn-adfs-login {
+      background: #0078d4; color: white; border: none; padding: 10px; font-weight: bold;
+      font-size: 14px; cursor: pointer; width: 100%; border-radius: 6px; margin-top: 5px;
+      transition: all 0.3s ease;
+    }
+    .btn-adfs-login:hover {
+      background: #005a9e; transform: translateY(-2px); box-shadow: 0 5px 12px rgba(0, 120, 212, 0.3);
+    }
+    .btn-back-main {
+      background: transparent; color: #666; border: none; font-size: 12px; cursor: pointer; margin-top: 15px; text-decoration: underline; text-align: center;
+      transition: color 0.2s;
+    }
+    .btn-back-main:hover { color: #d32f2f; }
+
+    .error-msg { color: #d32f2f; font-size: 13px; font-weight: bold; margin-top: 10px; text-align: center; min-height: 20px; }
+
+    /* 2. HEADER TOP VÀ DASHBOARD */
+    .dashboard-bg { background: #f4f6f8; min-height: 100vh; display: flex; flex-direction: column; }
+    .header-top {
+      background: #d32f2f; color: white; padding: 8px 40px; display: flex;
+      justify-content: space-between; align-items: center; font-size: 13px;
+    }
+    
+    .brand-title-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* CHỈNH ẢNH OIP.JPG HIỂN THỊ TOÀN BỘ VÀ VỪA VẶN VỚI VIỀN ĐỎ */
+    .user-avatar-header {
+      height: 36px;
+      width: auto;
+      max-width: 140px;
+      object-fit: contain;
+      background-color: #ffffff;
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      display: block;
+    }
+
+    .header-nav { display: flex; gap: 18px; align-items: center; }
+    .header-nav a { color: white; text-decoration: none; font-weight: 500; transition: transform 0.2s; display: inline-block; }
+    .header-nav a:hover { transform: translateY(-2px); text-decoration: underline; }
+    
+    /* AVATAR PROFILE & DROPDOWN MENU */
+    .profile-dropdown-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .user-profile-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      cursor: pointer;
+      display: block;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .user-profile-img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: #ffffff;
+      min-width: 170px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      z-index: 1000;
+      overflow: hidden;
+      border: 1px solid #eee;
+    }
+
+    /* Cầu nối đệm giữ hover giữa avatar và menu */
+    .dropdown-menu::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: transparent;
+    }
+
+    .profile-dropdown-container:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      color: #333 !important;
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f5f5f5;
+      color: #d32f2f !important;
+      transform: none !important;
+    }
+
+    .dropdown-menu .divider-line {
+      height: 1px;
+      background-color: #eee;
+      margin: 0;
+    }
+
+    /* BẢNG NỔI (MODAL THÔNG TIN CÁ NHÂN) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-card {
+      background: #fff;
+      width: 700px;
+      max-width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      background: #d32f2f;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 25px 30px;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    .profile-modal-avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #d32f2f;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .profile-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 20px;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-item label {
+      color: #777;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .info-item span {
+      color: #222;
+      font-weight: 600;
+    }
+
+    .main-nav {
+      background: #ffffff; border-bottom: 1px solid #ddd; padding: 0 40px; display: flex; gap: 20px; font-size: 14px;
+    }
+    .nav-item {
+      padding: 14px 10px; cursor: pointer; color: #333; font-weight: 500; border-bottom: 3px solid transparent;
+      transition: all 0.25s ease; border-radius: 6px 6px 0 0;
+    }
+    .nav-item:hover {
+      color: #d32f2f; background: rgba(211, 47, 47, 0.05); transform: translateY(-2px);
+    }
+    .nav-item.active { color: #d32f2f; border-bottom: 3px solid #d32f2f; font-weight: bold; }
+
+    .content-container { padding: 20px 40px; flex: 1; }
+    .breadcrumb { font-size: 13px; color: #777; margin-bottom: 15px; }
+    .breadcrumb span { color: #d32f2f; }
+
+    .title-header { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #222; }
+    .title-header span { color: #d32f2f; }
+    .stats-bar { display: flex; gap: 12px; margin-bottom: 20px; }
+    .stat-box {
+      background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 10px; font-size: 13px; color: #555;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.3s ease;
+    }
+    .stat-box:hover {
+      transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); border-color: #bbdefb;
+    }
+    
+    .table-card-wrapper {
+      border-radius: 14px; overflow: hidden; border: 1px solid #b3e5fc;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 25px; background: #fff;
+      transition: box-shadow 0.3s ease;
+    }
+    .table-card-wrapper:hover {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .term-title {
+      background: #b3e5fc; padding: 12px 18px; font-weight: bold; color: #0277bd; font-size: 14px;
+      display: flex; justify-content: space-between; border-bottom: 1px solid #81d4fa;
+    }
+
+    .custom-table { width: 100%; border-collapse: collapse; background: #fff; }
+    .custom-table th, .custom-table td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; font-size: 13px; }
+    .custom-table th { background: #e1f5fe; color: #0277bd; font-weight: bold; }
+    
+    .custom-table tbody tr:hover { background-color: #f1f8ff; }
+    
+    .interactive-text {
+      color: #0277bd; font-weight: 500; cursor: pointer; display: inline-block;
+      transition: all 0.2s ease; padding: 2px 6px; border-radius: 4px;
+    }
+    .interactive-text:hover {
+      color: #d32f2f; background: rgba(211, 47, 47, 0.1);
+      transform: translateX(4px) scale(1.02);
+    }
+
+    .detail-red { color: #d32f2f; font-size: 12px; white-space: pre-line; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 15px; }
+    .form-card {
+      background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 18px;
+      transition: all 0.3s ease; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .form-card:hover {
+      transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); border-color: #d32f2f;
+    }
+    .form-card h4 { font-size: 14px; color: #333; margin-bottom: 8px; transition: color 0.2s; }
+    .form-card:hover h4 { color: #d32f2f; }
+    .form-card p { font-size: 12px; color: #777; line-height: 1.4; }
+
+    .footer { background: #fff; border-top: 1px solid #ddd; padding: 25px 40px; display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-top: auto; }
+    .footer-brand { font-weight: bold; color: #d32f2f; font-size: 16px; }
+
+    .btn-red {
+      background: #d32f2f; color: #fff; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold;
+      transition: all 0.25s ease; box-shadow: 0 2px 6px rgba(211, 47, 47, 0.2);
+    }
+    .btn-red:hover {
+      background: #b71c1c; transform: translateY(-2px); box-shadow: 0 5px 12px rgba(211, 47, 47, 0.4);
+    }
+
+    .empty-state { background: #fff; border: 1px solid #ddd; padding: 40px; text-align: center; color: #888; font-size: 14px; border-radius: 12px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body id="body-root" class="login-wrapper">
+
+  <div id="login-container-wrapper" class="flip-container">
+    
+    <div class="card-front">
+      <h2>Đăng nhập</h2>
+      <div style="font-size:12px; text-align:center; color:#666; margin-bottom:10px;">Sử dụng email Office 365 của đại học!</div>
+      
+      <button class="btn-office" onclick="toggleFlip(true)">
+        <img src="/OIP.jpg" alt="Office Icon" class="user-icon-btn">
+        <span>Office 365</span>
+      </button>
+
+      <div class="divider">
+        Hoặc đăng nhập bằng:
+        <span>Tài khoản và mật khẩu của hệ thống qldt</span>
+      </div>
+      
+      <div class="form-group">
+        <label>Tài khoản *</label>
+        <input type="text" id="username" placeholder="Nhập tên tài khoản" value="">
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu *</label>
+        <input type="password" id="password" placeholder="Nhập một mật khẩu" value="">
+      </div>
+
+      <button class="btn-submit" onclick="handleLogin('normal')">Đăng nhập</button>
+      <div id="error-msg" class="error-msg"></div>
+    </div>
+
+    <div class="card-back">
+      <img src="/OIP.jpg" class="user-logo-large" alt="User Photo">
+      <div class="adfs-title">Sign in <b>HUST - Office 365</b> with your account</div>
+      
+      <input type="text" id="adfs-username" class="adfs-input" placeholder="someone@example.com">
+      <input type="password" id="adfs-password" class="adfs-input" placeholder="Password">
+      
+      <button class="btn-adfs-login" onclick="handleLogin('adfs')">Sign in</button>
+      <button class="btn-back-main" onclick="toggleFlip(false)">🠔 Quay lại đăng nhập QLĐT</button>
+      
+      <div id="adfs-error-msg" class="error-msg"></div>
+    </div>
+
+  </div>
+
+  <div id="dashboard-section" class="dashboard-bg hidden" style="width: 100%;">
+    
+    <div class="header-top">
+      <div class="brand-title-box">
+        <img src="/OIP.jpg" alt="Header Avatar" class="user-avatar-header">
+      </div>
+      
+      <div class="header-nav">
+        <a href="#">Trang chủ</a>
+        <a href="#">Thành tựu</a>
+        <a href="#">Tin tức</a>
+        <a href="#">Sự kiện</a>
+        <a href="#">Hỏi đáp</a>
+        <span style="background: #444; padding: 2px 6px; border-radius: 3px; font-size: 11px;">EN | VI</span>
+        
+        <div class="profile-dropdown-container">
+          <img src="/anhtran.jpg" alt="Profile" class="user-profile-img">
+          <div class="dropdown-menu">
+            <a href="javascript:void(0)" onclick="openProfileModal()">👤 Thông tin cá nhân</a>
+            <a href="javascript:void(0)" onclick="changePassword()">🔑 Đổi mật khẩu</a>
+            <div class="divider-line"></div>
+            <a href="javascript:void(0)" onclick="logout()">🔴 Đăng xuất</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="main-nav">
+      <div class="nav-item active" onclick="switchTab('hoctap', this)">Học tập 🠟</div>
+      <div class="nav-item" onclick="switchTab('doan', this)">Đồ án 🠟</div>
+      <div class="nav-item" onclick="switchTab('bieumau', this)">Biểu mẫu</div>
+      <div class="nav-item" onclick="switchTab('hocbong', this)">Học bổng (5) 🠟</div>
+      <div class="nav-item" onclick="switchTab('hoctichhop', this)">Học tích hợp 🠟</div>
+      <div class="nav-item" onclick="switchTab('nckh', this)">NCKH</div>
+      <div class="nav-item" onclick="switchTab('traodoi', this)">CT Trao đổi</div>
+      <div class="nav-item" onclick="switchTab('hotro', this)">Hỗ trợ 🠟</div>
+      <div class="nav-item" onclick="switchTab('khaosat', this)">Khảo sát</div>
+    </div>
+
+    <div class="content-container">
+      <div id="tab-breadcrumb" class="breadcrumb">Trang chủ / Học tập / <span>Bảng điểm cá nhân</span></div>
+      
+      <div id="tab-hoctap" class="tab-content">
+        <div class="title-header">Bảng điểm chi tiết: <span>TRẦN ĐỨC ANH - 202410807</span></div>
+        <div class="stats-bar">
+          <div class="stat-box">GPA hệ 4: <b style="color: #d32f2f;">2.31</b></div>
+          <div class="stat-box">CPA hệ 4: <b style="color: #d32f2f;">1.46</b></div>
+          <div class="stat-box">Mức cảnh báo: <b>-</b></div>
+        </div>
+
+        <div class="table-card-wrapper">
+          <div class="term-title"><span>Học kỳ 2 - Năm học 2025-2026</span><span>▲</span></div>
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th style="width: 120px;">MÃ HỌC PHẦN</th>
+                <th style="width: 250px;">TÊN HỌC PHẦN</th>
+                <th style="width: 80px; text-align: center;">SỐ TC</th>
+                <th>ĐIỂM THÀNH PHẦN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td><span class="interactive-text">CH3061</span></td><td><span class="interactive-text">Hóa lý II</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 7 (Đã gửi Ban ĐT)<br>• CK: 6.5 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>2</td><td><span class="interactive-text">CH3120</span></td><td><span class="interactive-text">Hóa vô cơ</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 10 (Đã gửi Ban ĐT)<br>• CK: 7.5 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>3</td><td><span class="interactive-text">MI1112</span></td><td><span class="interactive-text">Giải tích I</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 7 (Đã có điểm, chưa gửi Ban ĐT)<br>• CK: 6 (Đã có điểm, chưa gửi Ban ĐT)</td></tr>
+              <tr><td>4</td><td><span class="interactive-text">PE1014</span></td><td><span class="interactive-text">Lý luận TDTT</span></td><td style="text-align:center;">0</td><td class="detail-red">• CK: 8 (Đã gửi Ban ĐT)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-card-wrapper">
+          <div class="term-title"><span>Học kỳ 1 - Năm học 2025-2026</span><span>▲</span></div>
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th style="width: 120px;">MÃ HỌC PHẦN</th>
+                <th style="width: 250px;">TÊN HỌC PHẦN</th>
+                <th style="width: 80px; text-align: center;">SỐ TC</th>
+                <th>ĐIỂM THÀNH PHẦN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>5</td><td><span class="interactive-text">CH2014</span></td><td><span class="interactive-text">HÓA SINH ĐẠI CƯƠNG</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 8 (Đã gửi Ban ĐT)<br>• CK: 6 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>6</td><td><span class="interactive-text">CH3051</span></td><td><span class="interactive-text">Hóa lý 1</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 3 (Đã gửi Ban ĐT)<br>• CK: 3 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>7</td><td><span class="interactive-text">CH3052</span></td><td><span class="interactive-text">TN Hóa lý I</span></td><td style="text-align:center;">1</td><td class="detail-red">• QT: 7 (Đã gửi Ban ĐT)<br>• CK: 6.5 (Đã gửi Ban ĐT)<br>• TN/TH: 6.5</td></tr>
+              <tr><td>8</td><td><span class="interactive-text">IT1140</span></td><td><span class="interactive-text">Tin học đại cương</span></td><td style="text-align:center;">4</td><td class="detail-red">• TN/TH: 10<br>• QT: 10 (Đã gửi Ban ĐT)<br>• CK: 5 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>9</td><td><span class="interactive-text">PH1121</span></td><td><span class="interactive-text">Vật lý đại cương II</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 8 (Đã gửi Ban ĐT)<br>• CK: 0 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>10</td><td><span class="interactive-text">SSH1121</span></td><td><span class="interactive-text">Kinh tế chính trị Mác - Lênin</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 3 (Đã gửi Ban ĐT)<br>• CK: 3.5 (Đã gửi Ban ĐT)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-card-wrapper">
+          <div class="term-title"><span>Học kỳ 2 - Năm học 2024-2025</span><span>▲</span></div>
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th style="width: 120px;">MÃ HỌC PHẦN</th>
+                <th style="width: 250px;">TÊN HỌC PHẦN</th>
+                <th style="width: 80px; text-align: center;">SỐ TC</th>
+                <th>ĐIỂM THÀNH PHẦN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>11</td><td><span class="interactive-text">CH1015</span></td><td><span class="interactive-text">Hóa học II</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 5 (Đã gửi Ban ĐT)<br>• CK: 3 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>12</td><td><span class="interactive-text">EM1170</span></td><td><span class="interactive-text">Pháp luật đại cương</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 7 (Đã gửi Ban ĐT)<br>• CK: 4.5 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>13</td><td><span class="interactive-text">MI1122</span></td><td><span class="interactive-text">Giải tích II</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 7.5 (Đã gửi Ban ĐT)<br>• CK: 6 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>14</td><td><span class="interactive-text">MI1132</span></td><td><span class="interactive-text">GIẢI TÍCH III</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 4.5 (Đã gửi Ban ĐT)<br>• CK: 2 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>15</td><td><span class="interactive-text">MIL1210</span></td><td><span class="interactive-text">Đường lối quốc phòng và an ninh của Đảng Cộng sản Việt Nam</span></td><td style="text-align:center;">0</td><td class="detail-red">• QT: 4.5 (Đã gửi Ban ĐT)<br>• CK: 0 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>16</td><td><span class="interactive-text">MIL1220</span></td><td><span class="interactive-text">CÔNG TÁC QUỐC PHÒNG VÀ AN NINH</span></td><td style="text-align:center;">0</td><td class="detail-red">• QT: 5.5 (Đã gửi Ban ĐT)<br>• CK: 5.5 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>17</td><td><span class="interactive-text">PH1111</span></td><td><span class="interactive-text">Vật lý đại cương I</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 6.5 (Đã gửi Ban ĐT)<br>• CK: 4.5 (Đã gửi Ban ĐT)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-card-wrapper">
+          <div class="term-title"><span>Học kỳ 1 - Năm học 2024-2025</span><span>▲</span></div>
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th style="width: 120px;">MÃ HỌC PHẦN</th>
+                <th style="width: 250px;">TÊN HỌC PHẦN</th>
+                <th style="width: 80px; text-align: center;">SỐ TC</th>
+                <th>ĐIỂM THÀNH PHẦN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>18</td><td><span class="interactive-text">CH1012</span></td><td><span class="interactive-text">Hóa học 1</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 7.5 (Đã gửi Ban ĐT)<br>• CK: 6 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>19</td><td><span class="interactive-text">CH2000</span></td><td><span class="interactive-text">Nhập môn Kỹ thuật Hóa học</span></td><td style="text-align:center;">3</td><td class="detail-red">• TN/TH: 8<br>• QT: 0 (Đã gửi Ban ĐT)<br>• CK: 8 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>20</td><td><span class="interactive-text">EM1010</span></td><td><span class="interactive-text">Quản trị học đại cương</span></td><td style="text-align:center;">2</td><td class="detail-red">• QT: 8 (Đã gửi Ban ĐT)<br>• CK: 8 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>21</td><td><span class="interactive-text">MI1112</span></td><td><span class="interactive-text">Giải tích I</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 3 (Đã gửi Ban ĐT)<br>• CK: 3 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>22</td><td><span class="interactive-text">MI1142</span></td><td><span class="interactive-text">Đại số</span></td><td style="text-align:center;">3</td><td class="detail-red">• QT: 2.5 (Đã gửi Ban ĐT)<br>• CK: 0 (Đã gửi Ban ĐT)</td></tr>
+              <tr><td>23</td><td><span class="interactive-text">MIL1230</span></td><td><span class="interactive-text">Quân sự chung</span></td><td style="text-align:center;">0</td><td class="detail-red">• QT: 8 (Đã gửi Ban ĐT)<br>• CK: 3 (Đã gửi Ban ĐT)<br>• TN/TH: 3</td></tr>
+              <tr><td>24</td><td><span class="interactive-text">MIL1240</span></td><td><span class="interactive-text">Kỹ thuật chiến đấu bộ binh và chiến thuật</span></td><td style="text-align:center;">0</td><td class="detail-red">• QT: 8 (Đã gửi Ban ĐT)<br>• CK: 8 (Đã gửi Ban ĐT)<br>• TN/TH: 8</td></tr>
+              <tr><td>25</td><td><span class="interactive-text">PE1014</span></td><td><span class="interactive-text">Lý luận TDTT</span></td><td style="text-align:center;">0</td><td class="detail-red">• CK: 0 (Đã gửi Ban ĐT)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div id="tab-bieumau" class="tab-content hidden">
+        <div class="title-header">Biểu mẫu Trường Hóa và Khoa học Sự sống</div>
+        <div class="card-grid">
+          <div class="form-card"><h4>Giấy chứng nhận HVKSCS</h4><p>Giấy chứng nhận Học viên kỹ sư chuyên sâu...</p></div>
+          <div class="form-card"><h4>Giấy chứng nhận sinh viên</h4><p>Giấy xác nhận là sinh viên của đại học...</p></div>
+          <div class="form-card"><h4>Giấy giới thiệu sinh viên</h4><p>Giấy giới thiệu SV phục vụ công việc...</p></div>
+        </div>
+      </div>
+      <div id="tab-doan" class="tab-content hidden"><div class="empty-state">📑 Không có dữ liệu đồ án trong học kỳ này</div></div>
+      <div id="tab-hocbong" class="tab-content hidden">
+        <div class="title-header">Danh sách Học bổng khả dụng</div>
+        <div class="table-card-wrapper">
+          <table class="custom-table">
+            <thead><tr><th>STT</th><th>HỌC BỔNG</th><th>THỜI GIAN ĐĂNG KÝ</th><th>SL</th><th>HÀNH ĐỘNG</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><span class="interactive-text">Chương trình thực tập Công ty KIOXIA</span></td><td>14/07/2026 - 05/08/2026</td><td>0</td><td><button class="btn-red">Đăng ký</button></td></tr>
+              <tr><td>2</td><td><span class="interactive-text">THỰC TẬP NEXUS TẠI ĐẠI HỌC TOKYO</span></td><td>06/07/2026 - 07/08/2026</td><td>5</td><td><button class="btn-red">Đăng ký</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="tab-hoctichhop" class="tab-content hidden"><div class="empty-state">Chưa đăng ký chương trình tích hợp nào.</div></div>
+      <div id="tab-nckh" class="tab-content hidden"><div class="empty-state">Chưa đăng ký đề tài NCKH nào trong năm 2026</div></div>
+      <div id="tab-traodoi" class="tab-content hidden"><div class="empty-state">Không có chương trình trao đổi khả dụng</div></div>
+      <div id="tab-hotro" class="tab-content hidden"><div class="empty-state">Hệ thống hỗ trợ trực tuyến 24/7 qua Hotline 024 3869 6099</div></div>
+      <div id="tab-khaosat" class="tab-content hidden"><div class="empty-state">Không có đợt khảo sát mới.</div></div>
+
+    </div>
+
+    <div class="footer">
+      <div>
+        <div class="footer-brand">ĐẠI HỌC BÁCH KHOA HÀ NỘI</div>
+        <p style="margin-top: 5px;">✉ vp@hust.edu.vn | 📞 024 3869 6099</p>
+        <p>📍 Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội</p>
+      </div>
+      <div>
+        <b>Liên kết nhanh</b>
+        <p style="margin-top: 5px;">Trang chủ | Phản hồi | Hỏi - Đáp</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="profile-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Thông tin sinh viên</span>
+        <button class="modal-close-btn" onclick="closeProfileModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img src="/anhtran.jpg" alt="Trần Đức Anh" class="profile-modal-avatar">
+        
+        <div class="profile-info-grid">
+          <div class="info-item">
+            <label>Mã sinh viên</label>
+            <span>202410807</span>
+          </div>
+          <div class="info-item">
+            <label>Họ và tên</label>
+            <span>TRẦN ĐỨC ANH</span>
+          </div>
+          <div class="info-item">
+            <label>Ngày sinh</label>
+            <span>12/09/2006</span>
+          </div>
+          <div class="info-item">
+            <label>Giới tính</label>
+            <span>Nam</span>
+          </div>
+          <div class="info-item">
+            <label>Lớp học</label>
+            <span>Kỹ thuật hoá học 08-K69</span>
+          </div>
+          <div class="info-item">
+            <label>Ngành học</label>
+            <span>Kỹ thuật Hóa học</span>
+          </div>
+          <div class="info-item">
+            <label>Khóa học</label>
+            <span>K69</span>
+          </div>
+          <div class="info-item">
+            <label>Trạng thái sinh viên</label>
+            <span style="color: #2e7d32;">Đang học</span>
+          </div>
+          <div class="info-item">
+            <label>Trường / Viện quản lý</label>
+            <span>Trường Hóa và Khoa học Sự sống</span>
+          </div>
+          <div class="info-item">
+            <label>Mức cảnh báo học tập</label>
+            <span>Mức 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      if (isLoggedIn === 'true') {
+        showDashboard();
+      }
+    });
+
+    function toggleFlip(isFlipped) {
+      const container = document.getElementById('login-container-wrapper');
+      if (isFlipped) {
+        container.classList.add('flipped');
+      } else {
+        container.classList.remove('flipped');
+      }
+    }
+
+    async function handleLogin(type) {
+      let u = '', p = '', errBox = null;
+
+      if (type === 'normal') {
+        u = document.getElementById('username').value.trim();
+        p = document.getElementById('password').value.trim();
+        errBox = document.getElementById('error-msg');
+      } else {
+        u = document.getElementById('adfs-username').value.trim();
+        p = document.getElementById('adfs-password').value.trim();
+        errBox = document.getElementById('adfs-error-msg');
+      }
+
+      errBox.innerText = '';
+
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        localStorage.setItem('isLoggedIn', 'true');
+        showDashboard();
+      } else {
+        errBox.innerText = data.message;
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('login-container-wrapper').classList.add('hidden');
+      document.getElementById('dashboard-section').classList.remove('hidden');
+      document.getElementById('body-root').className = 'dashboard-bg';
+    }
+
+    function switchTab(tabName, element) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(c => c.classList.add('hidden'));
+
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(i => i.classList.remove('active'));
+
+      document.getElementById('tab-' + tabName).classList.remove('hidden');
+      element.classList.add('active');
+    }
+
+    /* BẬT / TẮT MODAL THÔNG TIN CÁ NHÂN */
+    function openProfileModal() {
+      document.getElementById('profile-modal').classList.remove('hidden');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profile-modal').classList.add('hidden');
+    }
+
+    /* THÔNG BÁO ĐỔI MẬT KHẨU */
+    function changePassword() {
+      alert("404 không đủ quyền hạn");
+    }
+
+    /* ĐĂNG XUẤT */
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      location.reload();
+    }
+  </script>
+</body>
+</html>
