@@ -1,0 +1,606 @@
+{
+  "users": [
+    {
+      "username": "anh.td2410807@sis.hust.edu.vn",
+      "password": "12092006da",
+      "role": "student"
+    },
+    {
+      "username": "admin",
+      "password": "",
+      "role": "admin"
+    }
+  ],
+  "profile": {
+    "studentId": "202410807",
+    "name": "TRẦN ĐỨC ANH",
+    "dob": "12/09/2006",
+    "gender": "Nam",
+    "className": "Kỹ thuật hoá học 08-K69",
+    "major": "Kỹ thuật Hóa học",
+    "course": "K69",
+    "status": "Đang học",
+    "school": "Trường Hóa và Khoa học Sự sống",
+    "warningLevel": "Mức 0"
+  },
+  "terms": [
+    {
+      "name": "Học kỳ 2 - Năm học 2025-2026",
+      "courses": [
+        {
+          "code": "CH3061",
+          "name": "Hóa lý II",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 7.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 6.5,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c2"
+        },
+        {
+          "code": "CH3120",
+          "name": "Hóa vô cơ",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 10.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 7.5,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c3"
+        },
+        {
+          "code": "MI1112",
+          "name": "Giải tích I",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 7.0,
+              "note": "Đã có điểm, chưa gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 6.0,
+              "note": "Đã có điểm, chưa gửi Ban ĐT"
+            }
+          ],
+          "id": "c4"
+        },
+        {
+          "code": "PE1014",
+          "name": "Lý luận TDTT",
+          "credits": 0,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "CK",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c5"
+        }
+      ],
+      "id": "t1"
+    },
+    {
+      "name": "Học kỳ 1 - Năm học 2025-2026",
+      "courses": [
+        {
+          "code": "CH2014",
+          "name": "HÓA SINH ĐẠI CƯƠNG",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 6.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c7"
+        },
+        {
+          "code": "CH3051",
+          "name": "Hóa lý 1",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c8"
+        },
+        {
+          "code": "CH3052",
+          "name": "TN Hóa lý I",
+          "credits": 1,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 7.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 6.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "TN/TH",
+              "value": 6.5,
+              "note": ""
+            }
+          ],
+          "id": "c9"
+        },
+        {
+          "code": "IT1140",
+          "name": "Tin học đại cương",
+          "credits": 4,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "TN/TH",
+              "value": 10.0,
+              "note": ""
+            },
+            {
+              "label": "QT",
+              "value": 10.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 5.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c10"
+        },
+        {
+          "code": "PH1121",
+          "name": "Vật lý đại cương II",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 0.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c11"
+        },
+        {
+          "code": "SSH1121",
+          "name": "Kinh tế chính trị Mác - Lênin",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 3.5,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c12"
+        }
+      ],
+      "id": "t6"
+    },
+    {
+      "name": "Học kỳ 2 - Năm học 2024-2025",
+      "courses": [
+        {
+          "code": "CH1015",
+          "name": "Hóa học II",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 5.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c14"
+        },
+        {
+          "code": "EM1170",
+          "name": "Pháp luật đại cương",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 7.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 4.5,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c15"
+        },
+        {
+          "code": "MI1122",
+          "name": "Giải tích II",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 7.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 6.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c16"
+        },
+        {
+          "code": "MI1132",
+          "name": "GIẢI TÍCH III",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 4.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 2.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c17"
+        },
+        {
+          "code": "MIL1210",
+          "name": "Đường lối quốc phòng và an ninh của Đảng Cộng sản Việt Nam",
+          "credits": 0,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 4.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 0.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c18"
+        },
+        {
+          "code": "MIL1220",
+          "name": "CÔNG TÁC QUỐC PHÒNG VÀ AN NINH",
+          "credits": 0,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 5.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 5.5,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c19"
+        },
+        {
+          "code": "PH1111",
+          "name": "Vật lý đại cương I",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 6.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 4.5,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c20"
+        }
+      ],
+      "id": "t13"
+    },
+    {
+      "name": "Học kỳ 1 - Năm học 2024-2025",
+      "courses": [
+        {
+          "code": "CH1012",
+          "name": "Hóa học 1",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 7.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 6.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c22"
+        },
+        {
+          "code": "CH2000",
+          "name": "Nhập môn Kỹ thuật Hóa học",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "TN/TH",
+              "value": 8.0,
+              "note": ""
+            },
+            {
+              "label": "QT",
+              "value": 0.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c23"
+        },
+        {
+          "code": "EM1010",
+          "name": "Quản trị học đại cương",
+          "credits": 2,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c24"
+        },
+        {
+          "code": "MI1112",
+          "name": "Giải tích I",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c25"
+        },
+        {
+          "code": "MI1142",
+          "name": "Đại số",
+          "credits": 3,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 2.5,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 0.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c26"
+        },
+        {
+          "code": "MIL1230",
+          "name": "Quân sự chung",
+          "credits": 0,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 3.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "TN/TH",
+              "value": 3.0,
+              "note": ""
+            }
+          ],
+          "id": "c27"
+        },
+        {
+          "code": "MIL1240",
+          "name": "Kỹ thuật chiến đấu bộ binh và chiến thuật",
+          "credits": 0,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "QT",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "CK",
+              "value": 8.0,
+              "note": "Đã gửi Ban ĐT"
+            },
+            {
+              "label": "TN/TH",
+              "value": 8.0,
+              "note": ""
+            }
+          ],
+          "id": "c28"
+        },
+        {
+          "code": "PE1014",
+          "name": "Lý luận TDTT",
+          "credits": 0,
+          "ckWeight": 0.7,
+          "letter": "",
+          "scores": [
+            {
+              "label": "CK",
+              "value": 0.0,
+              "note": "Đã gửi Ban ĐT"
+            }
+          ],
+          "id": "c29"
+        }
+      ],
+      "id": "t21"
+    }
+  ],
+  "timetable": [],
+  "projects": [],
+  "forms": [
+    {
+      "id": "f30",
+      "title": "Giấy chứng nhận HVKSCS",
+      "description": "Giấy chứng nhận Học viên kỹ sư chuyên sâu...",
+      "link": ""
+    },
+    {
+      "id": "f31",
+      "title": "Giấy chứng nhận sinh viên",
+      "description": "Giấy xác nhận là sinh viên của đại học...",
+      "link": ""
+    },
+    {
+      "id": "f32",
+      "title": "Giấy giới thiệu sinh viên",
+      "description": "Giấy giới thiệu SV phục vụ công việc...",
+      "link": ""
+    }
+  ],
+  "scholarships": [
+    {
+      "id": "s33",
+      "name": "Chương trình thực tập Công ty KIOXIA",
+      "period": "14/07/2026 - 05/08/2026",
+      "quantity": 0,
+      "registered": false
+    },
+    {
+      "id": "s34",
+      "name": "THỰC TẬP NEXUS TẠI ĐẠI HỌC TOKYO",
+      "period": "06/07/2026 - 07/08/2026",
+      "quantity": 5,
+      "registered": false
+    }
+  ],
+  "surveys": []
+}
