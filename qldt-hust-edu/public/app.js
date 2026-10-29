@@ -288,16 +288,14 @@ function renderProfile() {
 function renderGrades() {
   const { terms, profile } = state.data;
   const overall = overallStats();
-  const latest = terms[0] ? termStats(terms[0]) : { gpa: null };
-  const gpa = profile.gpaOverride || fmt(latest.gpa);
-  const cpa = profile.cpaOverride || fmt(overall.cpa);
+  // GPA lấy theo học kỳ gần nhất đã có điểm (bỏ qua học kỳ mới tạo chưa nhập môn)
+  const latest = terms.map(termStats).find(s => s.gpa !== null) || { gpa: null };
 
   document.getElementById('stats-bar').innerHTML = `
-    <div class="stat-box">GPA hệ 4: <b style="color: #d32f2f;">${esc(gpa)}</b></div>
-    <div class="stat-box">CPA hệ 4: <b style="color: #d32f2f;">${esc(cpa)}</b></div>
+    <div class="stat-box">GPA hệ 4: <b style="color: #d32f2f;">${fmt(latest.gpa)}</b></div>
+    <div class="stat-box">CPA hệ 4: <b style="color: #d32f2f;">${fmt(overall.cpa)}</b></div>
     <div class="stat-box">TC tích lũy: <b>${overall.accumulated}</b></div>
-    <div class="stat-box">Mức cảnh báo: <b>${esc(profile.warningLevel || '-')}</b></div>
-    ${profile.gpaOverride || profile.cpaOverride ? `<div class="stat-box admin-only" style="color:#999;">GPA/CPA đang nhập tay. Tự tính: ${fmt(latest.gpa)} / ${fmt(overall.cpa)}</div>` : ''}`;
+    <div class="stat-box">Mức cảnh báo: <b>${esc(profile.warningLevel || '-')}</b></div>`;
 
   if (!terms.length) {
     document.getElementById('terms-container').innerHTML = '<div class="empty-state">Chưa có dữ liệu bảng điểm</div>';
@@ -704,9 +702,7 @@ function editProfile() {
     { key: 'dob', label: 'Ngày sinh' }, { key: 'gender', label: 'Giới tính', type: 'select', options: ['Nam', 'Nữ'] },
     { key: 'className', label: 'Lớp học' }, { key: 'major', label: 'Ngành học' }, { key: 'course', label: 'Khóa học' },
     { key: 'status', label: 'Trạng thái sinh viên' }, { key: 'school', label: 'Trường / Viện quản lý' },
-    { key: 'warningLevel', label: 'Mức cảnh báo học tập' },
-    { key: 'gpaOverride', label: 'GPA hiển thị (để trống để tự tính)' },
-    { key: 'cpaOverride', label: 'CPA hiển thị (để trống để tự tính)' }
+    { key: 'warningLevel', label: 'Mức cảnh báo học tập' }
   ];
   showForm('Sửa thông tin sinh viên', fields, state.data.profile, async values => {
     await api('PUT', '/api/admin/profile', values);
